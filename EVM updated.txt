@@ -55,6 +55,7 @@ using Counters for Counters.Counter;
     mapping(uint=>uint)private candidate_get_votes;
     mapping(address=>bool)private waiting_for_appr;
     mapping(uint256=> bool)public voters_cnic;
+    mapping(uint256=> bool)public Candidate_cnic;
     CandidateInfo[] private CandidateConfirmed;
     uint no_Requests;
    address[] Winners = new address[](No_Of_Winners);
@@ -108,6 +109,7 @@ using Counters for Counters.Counter;
        require(!candidate_added[_addr],"already listed as EVM cadidate");
        require(!approved_by_owner[msg.sender][_addr],"you already approve this candidate");
        require(!waiting_for_appr[_addr],"already waiting for approvals");
+       require(!Candidate_cnic[_cnic],"CNIC No is already added");
       
        uint _id = _candidate_Ids.current();
        
@@ -122,6 +124,7 @@ using Counters for Counters.Counter;
        _CandidateInfo[_id].no_approvals += 1;
        _CandidateInfo[_id].already_listed = true;  
        waiting_for_appr[_addr] = true;
+       Candidate_cnic[_cnic] = true;
        _candidate_Ids.increment();        
     }
 
@@ -227,6 +230,7 @@ using Counters for Counters.Counter;
          _CandidateInfo[id].votes_count +=1;
          _total_voters.increment();
          vote_casted[msg.sender] = true;
+         voters_cnic[_cnic] = true;
         } 
 
     function calculate_Results()public returns(uint,uint){
@@ -244,7 +248,7 @@ using Counters for Counters.Counter;
           max = b;
       }
      }
-     winers_id = max;
+     winers_id = _CandidateInfo[max].id;
      No_Of_Winners+=1;
      Winners.push(_CandidateInfo[max].addr);
 
