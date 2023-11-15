@@ -1,4 +1,4 @@
-                                                **EVM -> Ethereum Virtual Machine**
+#                                                **EVM -> Ethereum Virtual Machine**
 DAO based EVM Smart Contract
 first you need to have 3 Owners
 then one of owner enter new candidate for elections and request other owners to approve it 
